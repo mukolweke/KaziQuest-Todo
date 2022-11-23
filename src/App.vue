@@ -7,41 +7,43 @@ import { ref } from "@vue/runtime-core";
 import { computed } from "@vue/reactivity";
 
 let todos = ref([
-  { label: "Complete online Javascript course", completed: true },
-  { label: "10 minutes meditation", completed: false },
-  { label: "Read for 1 hour", completed: false },
-  { label: "Pick up groceries", completed: false },
-  { label: "Complete Todo App on Frontend Mentor", completed: false },
+  { title: "Complete online Javascript course", completed: true },
+  { title: "10 minutes meditation", completed: false },
+  { title: "Read for 1 hour", completed: false },
+  { title: "Pick up groceries", completed: false },
+  { title: "Complete Todo App on Frontend Mentor", completed: false },
 ]);
 
 let filteredTodos = ref(todos.value);
+let activeFilter = ref("all");
 
 let addTodo = (value) => {
-  todos.value.push({ label: value, completed: false });
+  todos.value.push({ title: value, completed: false });
 };
 
 let markTodoComplete = (indexVal) => {
   todos.value.find((item, index) => index === indexVal).completed = true; // eslint-disable-line
+  filterTodos(activeFilter.value);
 };
 
 let removeTodo = (indexVal) => {
-  todos.value = [
-    ...todos.value.filter((item, index) => {
-      // eslint-disable-line
-      return index !== indexVal;
-    }),
-  ];
+  todos.value.splice(indexVal, 1);
 };
 
 let activeTodosCount = computed(() => {
   return todos.value.filter((item) => item.completed === false).length;
 });
 
-let clearCompleted = () => {
-  todos.value = [...todos.value.filter((item) => item.completed === false)];
+let clearCompletedTodos = () => {
+  todos.value.splice(
+    todos.value.findIndex((item) => item.completed === true),
+    1
+  );
 };
 
 let filterTodos = (filter) => {
+  activeFilter.value = filter;
+
   if (filter === "all") {
     filteredTodos.value = [...todos.value];
   }
@@ -73,7 +75,7 @@ let filterTodos = (filter) => {
           <!-- Text Input -->
           <TodoInput @saveTodo="addTodo" class="mb-4" />
 
-          <div v-if="filteredTodos.length > 0">
+          <div>
             <!-- List Items -->
             <TodoList
               :items="filteredTodos"
@@ -84,13 +86,13 @@ let filterTodos = (filter) => {
             <!-- Actions -->
             <Actions
               :active-items-count="activeTodosCount"
-              @clearCompleted="clearCompleted"
+              @clearCompleted="clearCompletedTodos"
               @filter="filterTodos"
             />
           </div>
         </div>
 
-        <p v-if="filteredTodos.length > 0" class="text-xs text-center text-light-grayish-blue">
+        <p v-if="filterTodos.length > 0" class="text-xs text-center text-very-dark-grayish-blue-2">
           Drag and drop to reorder list
         </p>
       </div>

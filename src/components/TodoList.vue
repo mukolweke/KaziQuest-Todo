@@ -25,7 +25,7 @@ let removeTodo = (index) => {
 
 <template>
   <div class="bg-very-dark-desaturated-blue rounded-t-[4px]">
-    <ul>
+    <ul v-if="filterdItems.length > 0">
       <li
         v-for="(item, index) in filterdItems"
         :key="index"
@@ -53,7 +53,7 @@ let removeTodo = (index) => {
             class="pl-6 w-full"
             :class="{ 'line-through text-very-dark-grayish-blue-2': item.completed }"
           >
-            {{ item.label }}
+            {{ item.title }}
           </p>
 
           <!-- Item remove action -->
@@ -63,6 +63,10 @@ let removeTodo = (index) => {
         </div>
       </li>
     </ul>
+
+    <div v-else class="py-6 flex items-center justify-center text-very-dark-grayish-blue-2">
+      No Todos added
+    </div>
   </div>
 </template>
 
