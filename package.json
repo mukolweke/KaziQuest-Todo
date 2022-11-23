@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@vue/reactivity": "^3.2.45",
+    "@vue/runtime-core": "^3.2.45",
     "core-js": "^3.8.3",
     "vue": "^3.2.13"
   },
