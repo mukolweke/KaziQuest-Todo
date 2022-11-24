@@ -3,8 +3,8 @@ import { useTodoStore } from "../store/todo";
 
 const store = useTodoStore();
 
-let submitFilter = (filter) => {
-  store.filterTodos(filter);
+let submitFilter = (value) => {
+  store.setFilter(value);
 };
 </script>
 

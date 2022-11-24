@@ -3,12 +3,14 @@ import AppHeader from "./components/AppHeader.vue";
 import TodoInput from "./components/TodoInput.vue";
 import TodoList from "./components/TodoList.vue";
 import Actions from "./components/AppActions.vue";
+import { useTodoStore } from "./store/todo";
+import { onMounted } from "@vue/runtime-dom";
 
-// let paginate = (array, page_size, page_number) => {
-//   return array.slice((page_number - 1) * page_size, page_number * page_size);
-// };
+const store = useTodoStore();
 
-// console.log(paginate(todos.value, 2, 1), paginate(todos.value, 2, 2), paginate(todos.value, 2, 3));
+onMounted(() => {
+  store.setStoreData();
+});
 </script>
 
 <template>
@@ -39,12 +41,12 @@ import Actions from "./components/AppActions.vue";
           </div>
         </div>
 
-        <!-- <p
+        <p
           v-if="store.filteredTodos.length > 0"
           class="text-xs text-center text-very-dark-grayish-blue-2"
         >
           Drag and drop to reorder list
-        </p> -->
+        </p>
       </div>
     </section>
   </section>

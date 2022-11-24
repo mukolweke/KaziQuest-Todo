@@ -1,18 +1,18 @@
 <script setup>
 import { useTodoStore } from "../store/todo";
-import { computed, ref } from "@vue/reactivity";
+import { computed, ref } from "@vue/runtime-dom";
 import draggable from "vuedraggable";
 
-let drag = ref(false);
-
 const store = useTodoStore();
+
+let drag = ref(false);
 
 let myTodos = computed({
   get() {
     return store.filteredTodos;
   },
   set(value) {
-    store.sortTodos(value);
+    store.updateTodos(value);
   },
 });
 
@@ -23,7 +23,7 @@ let activeLabel = ref(null);
 <template>
   <div class="relative bg-very-dark-desaturated-blue rounded-t-[4px]">
     <draggable
-      v-if="store.filteredTodos.length > 0"
+      v-if="myTodos.length > 0"
       v-model="myTodos"
       group="todos"
       @start="drag = true"
@@ -68,9 +68,9 @@ let activeLabel = ref(null);
             </p>
 
             <div
-              v-if="activeId === element.id"
+              v-show="activeId === element.id"
               @click.prevent="store.removeTodo(element.id)"
-              class="ml-auto block w-6 h-6"
+              class="ml-auto w-6 h-6 flex items-center"
             >
               <img src="../assets/images/ICON-CROSS.png" alt="Icon Cancel" />
             </div>
