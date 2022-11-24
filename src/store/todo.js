@@ -21,6 +21,10 @@ export const useTodoStore = defineStore("todo", () => {
   });
 
   //Actions
+  let sortTodos = (value) => {
+    todos.value = value;
+  };
+
   let addTodo = (value) => {
     let id = todos.value[todos.value.length - 1].id;
     todos.value.push({ id: id + 1, title: value, completed: false });
@@ -60,7 +64,6 @@ export const useTodoStore = defineStore("todo", () => {
     if (filter === "completed") {
       filteredTodos.value = [...todos.value.filter((item) => item.completed === true)];
     }
-    console.log(filter, filteredTodos.value);
   };
 
   return {
@@ -72,5 +75,6 @@ export const useTodoStore = defineStore("todo", () => {
     removeTodo,
     clearCompletedTodos,
     filterTodos,
+    sortTodos,
   };
 });
