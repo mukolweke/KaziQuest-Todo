@@ -1,17 +1,10 @@
 <script setup>
-import { defineProps, defineEmits, ref } from "@vue/reactivity";
+import { useTodoStore } from "../store/todo";
 
-defineProps({
-  activeItemsCount: Number,
-});
-
-let emit = defineEmits(["clearCompleted", "filter"]);
-
-let activeFilter = ref("all");
+const store = useTodoStore();
 
 let submitFilter = (filter) => {
-  activeFilter.value = filter;
-  emit("filter", filter);
+  store.filterTodos(filter);
 };
 </script>
 
@@ -19,14 +12,14 @@ let submitFilter = (filter) => {
   <div
     class="text-very-dark-grayish-blue-2 bg-very-dark-desaturated-blue rounded-b-[4px] px-6 py-4 text-xs flex items-center justify-between"
   >
-    <p>{{ activeItemsCount }} item{{ activeItemsCount > 1 ? "s" : "" }} left</p>
+    <p>{{ store.activeTodosCount }} item{{ store.activeTodosCount > 1 ? "s" : "" }} left</p>
 
     <div class="flex items-center space-x-4">
       <p
         class="cursor-pointer font-bold duration-[.3s] transition-colors"
         :class="{
-          'text-primary-bright-blue': activeFilter === 'all',
-          'hover:text-very-light-grayish-blue': activeFilter !== 'all',
+          'text-primary-bright-blue': store.activeFilter === 'all',
+          'hover:text-very-light-grayish-blue': store.activeFilter !== 'all',
         }"
         @click="submitFilter('all')"
       >
@@ -36,8 +29,8 @@ let submitFilter = (filter) => {
       <p
         class="cursor-pointer font-bold duration-[.3s] transition-colors"
         :class="{
-          'text-primary-bright-blue': activeFilter === 'active',
-          'hover:text-very-light-grayish-blue': activeFilter !== 'active',
+          'text-primary-bright-blue': store.activeFilter === 'active',
+          'hover:text-very-light-grayish-blue': store.activeFilter !== 'active',
         }"
         @click="submitFilter('active')"
       >
@@ -47,8 +40,8 @@ let submitFilter = (filter) => {
       <p
         class="cursor-pointer font-bold duration-[.3s] transition-colors"
         :class="{
-          'text-primary-bright-blue': activeFilter === 'completed',
-          'hover:text-very-light-grayish-blue': activeFilter !== 'completed',
+          'text-primary-bright-blue': store.activeFilter === 'completed',
+          'hover:text-very-light-grayish-blue': store.activeFilter !== 'completed',
         }"
         @click="submitFilter('completed')"
       >
@@ -57,8 +50,9 @@ let submitFilter = (filter) => {
     </div>
 
     <button
+      type="button"
       class="hover:text-very-light-grayish-blue duration-[.3s] transition-colors"
-      @click="emit('clearCompleted')"
+      @click="store.clearCompletedTodos()"
     >
       Clear Completed
     </button>

@@ -1,47 +1,36 @@
 <script setup>
-import { ref, computed, defineProps, defineEmits } from "@vue/reactivity";
+import { useTodoStore } from "../store/todo";
+import { ref } from "@vue/reactivity";
 
-let props = defineProps({
-  items: Array,
-});
+const store = useTodoStore();
 
-let filterdItems = computed(() => props.items);
-let activeIndex = ref(null);
-
-let hoverTodoItem = (index) => {
-  activeIndex.value = index;
-};
-
-let emit = defineEmits(["markComplete", "removeTodo"]);
-
-let markComplete = (index) => {
-  emit("markComplete", index);
-};
-
-let removeTodo = (index) => {
-  emit("removeTodo", index);
-};
+let activeId = ref(null);
+let activeLabel = ref(null);
 </script>
 
 <template>
   <div class="bg-very-dark-desaturated-blue rounded-t-[4px]">
-    <ul v-if="filterdItems.length > 0">
+    <ul v-if="store.filteredTodos.length > 0">
       <li
-        v-for="(item, index) in filterdItems"
-        :key="index"
-        @mouseover="hoverTodoItem(index)"
-        @mouseout="hoverTodoItem(index)"
+        v-for="item in store.filteredTodos"
+        :key="item.id"
+        @mouseover.prevent="activeId = item.id"
+        @mouseout.prevent="activeId = null"
         class="px-6 py-[18px] border-b border-very-dark-grayish-blue-3 cursor-pointer"
       >
         <div class="flex items-center">
           <!-- Complete Checkmark -->
           <label
+            @mouseover.prevent="activeLabel = item.id"
+            @mouseout.prevent="activeLabel = null"
             class="inline-flex items-center cursor-pointer"
-            @click.prevent="markComplete(index)"
+            @click.prevent="store.markTodoComplete(item.id)"
           >
             <div
               class="w-5 h-5 rounded-full border border-very-dark-grayish-blue-2 flex items-center justify-center"
-              :class="{ 'completed-todo': item.completed }"
+              :class="{
+                'completed-todo': item.completed,
+              }"
             >
               <img v-if="item.completed" src="../assets/images/ICON-CHECK.png" alt="Icon Cancel" />
             </div>
@@ -49,15 +38,19 @@ let removeTodo = (index) => {
 
           <!-- Item Label -->
           <p
-            @click.prevent="markComplete(index)"
-            class="pl-6 w-full"
+            @click.prevent="store.markTodoComplete(item.id)"
+            class="px-6 w-full"
             :class="{ 'line-through text-very-dark-grayish-blue-2': item.completed }"
           >
             {{ item.title }}
           </p>
 
           <!-- Item remove action -->
-          <div v-if="activeIndex === index" @click.prevent="removeTodo(index)" class="ml-auto">
+          <div
+            v-if="activeId === item.id"
+            @click.prevent="store.removeTodo(item.id)"
+            class="ml-auto block w-6 h-6"
+          >
             <img src="../assets/images/ICON-CROSS.png" alt="Icon Cancel" />
           </div>
         </div>

@@ -1,20 +1,20 @@
 <script setup>
-import { ref, defineEmits } from "@vue/reactivity";
-import { onMounted } from "@vue/runtime-core";
+import { useTodoStore } from "../store/todo";
+import { ref, onMounted } from "vue";
+
+const store = useTodoStore();
 
 let todo = ref("");
 
-let emit = defineEmits(["saveTodo"]);
-
 let submit = () => {
   if (todo.value) {
-    emit("saveTodo", todo.value);
+    store.addTodo(todo.value);
     todo.value = "";
   }
 };
 
+// Focus input on load
 const input = ref(null);
-
 onMounted(() => {
   input.value.focus();
 });
@@ -32,7 +32,7 @@ onMounted(() => {
       <input
         v-model="todo"
         ref="input"
-        class="w-full py-4 text-very-light-grayish-blue bg-very-dark-desaturated-blue rounded-[4px] pl-16 outline-none caret-primary-bright-blue focus:ring-0"
+        class="w-full py-4 pr-6 text-very-light-grayish-blue bg-very-dark-desaturated-blue rounded-[4px] pl-16 outline-none caret-primary-bright-blue focus:ring-0"
         placeholder="Add a todo"
         autocomplete="off"
       />
