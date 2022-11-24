@@ -90,7 +90,7 @@ let activeLabel = ref(null);
   background: linear-gradient(to top left, hsl(280, 87%, 65%), hsl(192, 100%, 67%));
 }
 
-.sortable-chosen {
+.sortable-chosen.sortable-ghost {
   box-shadow: 0 2px 10px 0 hsl(220, 98%, 61%);
   z-index: 1;
 }
