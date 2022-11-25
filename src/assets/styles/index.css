@@ -10,3 +10,28 @@
         font-size: 19px;
     }
 }
+
+.image-header {
+    background: url('../images/bg-desktop-dark.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 300px;
+    width: 100%;
+}
+
+.dark .image-header {
+    background: url('../images/bg-desktop-light.jpg');
+}
+
+@media (max-width: 375px) {
+    .image-header {
+        background: url('../images/BG-MOBILE-DARK.JPG');
+        background-repeat: no-repeat;
+        height: 200px;
+    }
+
+    .dark .image-header {
+        background: url('../images/BG-MOBILE-LIGHT.JPG');
+    }
+}

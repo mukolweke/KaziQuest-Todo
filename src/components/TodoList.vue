@@ -21,7 +21,9 @@ let activeLabel = ref(null);
 </script>
 
 <template>
-  <div class="relative bg-very-dark-desaturated-blue rounded-t-[4px]">
+  <div
+    class="relative dark:text-very-dark-grayish-blue bg-very-dark-desaturated-blue dark:bg-light-gray rounded-t-[4px]"
+  >
     <draggable
       v-if="myTodos.length > 0"
       v-model="myTodos"
@@ -36,33 +38,37 @@ let activeLabel = ref(null);
         <div
           @mouseover.prevent="activeId = element.id"
           @mouseout.prevent="activeId = null"
-          class="px-6 py-[18px] border-b border-very-dark-grayish-blue-3 cursor-pointer"
+          class="px-6 py-[18px] border-b border-very-dark-grayish-blue-3 dark:border-dark-grayish-blue/20 cursor-pointer"
         >
           <div class="flex items-center">
-            <label
+            <div
               @mouseover.prevent="activeLabel = element.id"
               @mouseout.prevent="activeLabel = null"
-              class="inline-flex items-center cursor-pointer"
+              class="flex items-center cursor-pointer"
               @click.prevent="store.markTodoComplete(element.id)"
             >
               <div
-                class="w-5 h-5 rounded-full border border-very-dark-grayish-blue-2 flex items-center justify-center"
+                class="w-5 h-5 rounded-full border-2 border-very-dark-grayish-blue-2/20 dark:border-dark-grayish-blue/20 flex items-center justify-center"
                 :class="{
-                  'completed-todo': element.completed,
+                  'completed-todo border-0': element.completed,
                 }"
               >
                 <img
                   v-if="element.completed"
                   src="../assets/images/ICON-CHECK.png"
                   alt="Icon Cancel"
+                  class="object-contain"
                 />
               </div>
-            </label>
+            </div>
 
             <p
               @click.prevent="store.markTodoComplete(element.id)"
               class="px-6 w-full"
-              :class="{ 'line-through text-very-dark-grayish-blue-2': element.completed }"
+              :class="{
+                'line-through text-very-dark-grayish-blue-2 dark:text-dark-grayish-blue':
+                  element.completed,
+              }"
             >
               {{ element.title }}
             </p>
@@ -91,7 +97,7 @@ let activeLabel = ref(null);
 }
 
 .sortable-chosen.sortable-ghost {
-  box-shadow: 0 2px 10px 0 hsl(220, 98%, 61%);
+  box-shadow: 0 2px 10px 0 hsl(220, 98%, 61%, 0.3);
   z-index: 1;
 }
 </style>
