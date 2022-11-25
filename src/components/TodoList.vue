@@ -92,7 +92,7 @@ let activeId = ref(null);
       v-else
       class="py-6 flex flex-col items-center justify-center text-very-dark-grayish-blue-2 dark:text-dark-grayish-blue"
     >
-      No Todos added
+      No {{ store.activeFilter !== "all" ? store.activeFilter : "" }} todos
     </div>
   </div>
 </template>
