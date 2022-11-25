@@ -9,7 +9,13 @@ let drag = ref(false);
 
 let myTodos = computed({
   get() {
-    return store.filteredTodos;
+    if (store.activeFilter === "active") {
+      return store.filteredTodos.filter((item) => item.completed === false);
+    } else if (store.activeFilter === "completed") {
+      return store.filteredTodos.filter((item) => item.completed === true);
+    } else {
+      return store.filteredTodos;
+    }
   },
   set(value) {
     store.updateTodos(value);
@@ -17,7 +23,6 @@ let myTodos = computed({
 });
 
 let activeId = ref(null);
-let activeLabel = ref(null);
 </script>
 
 <template>
@@ -42,15 +47,16 @@ let activeLabel = ref(null);
         >
           <div class="flex items-center">
             <div
-              @mouseover.prevent="activeLabel = element.id"
-              @mouseout.prevent="activeLabel = null"
               class="flex items-center cursor-pointer"
               @click.prevent="store.markTodoComplete(element.id)"
             >
               <div
-                class="w-5 h-5 rounded-full border-2 border-very-dark-grayish-blue-2/20 dark:border-dark-grayish-blue/20 flex items-center justify-center"
+                class="relative w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-[.5s]"
                 :class="{
                   'completed-todo border-0': element.completed,
+                  'hovered-border': activeId === element.id,
+                  'border-very-dark-grayish-blue-2/20 dark:border-dark-grayish-blue/20':
+                    activeId !== element.id,
                 }"
               >
                 <img
@@ -66,7 +72,7 @@ let activeLabel = ref(null);
               @click.prevent="store.markTodoComplete(element.id)"
               class="px-6 w-full"
               :class="{
-                'line-through text-very-dark-grayish-blue-2 dark:text-dark-grayish-blue':
+                'line-through text-very-dark-grayish-blue-2  dark:text-dark-grayish-blue':
                   element.completed,
               }"
             >
@@ -85,7 +91,10 @@ let activeLabel = ref(null);
       </template>
     </draggable>
 
-    <div v-else class="py-6 flex items-center justify-center text-very-dark-grayish-blue-2">
+    <div
+      v-else
+      class="py-6 flex flex-col items-center justify-center text-very-dark-grayish-blue-2 dark:text-dark-grayish-blue"
+    >
       No Todos added
     </div>
   </div>
@@ -94,6 +103,10 @@ let activeLabel = ref(null);
 <style scoped>
 .completed-todo {
   background: linear-gradient(to top left, hsl(280, 87%, 65%), hsl(192, 100%, 67%));
+}
+
+.hovered-border {
+  border-color: hsl(280, 87%, 65%, 0.4);
 }
 
 .sortable-chosen.sortable-ghost {

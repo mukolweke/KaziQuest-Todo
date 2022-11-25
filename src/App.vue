@@ -44,7 +44,7 @@ onMounted(() => {
         <FilterActions class="sm:hidden" />
 
         <p
-          v-if="store.filteredTodos.length > 0"
+          v-if="store.filteredTodos.length > 1"
           class="text-xs text-center text-very-dark-grayish-blue-2 dark:text-dark-grayish-blue"
         >
           Drag and drop to reorder list
