@@ -43,13 +43,11 @@ let activeId = ref(null);
         <div
           @mouseover.prevent="activeId = element.id"
           @mouseout.prevent="activeId = null"
+          @click.prevent="store.markTodoComplete(element.id)"
           class="px-6 py-[18px] border-b border-very-dark-grayish-blue-3 dark:border-dark-grayish-blue/20 cursor-pointer"
         >
           <div class="flex items-center">
-            <div
-              class="flex items-center cursor-pointer"
-              @click.prevent="store.markTodoComplete(element.id)"
-            >
+            <div class="flex items-center cursor-pointer">
               <div
                 class="relative w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-[.5s]"
                 :class="{
@@ -69,7 +67,6 @@ let activeId = ref(null);
             </div>
 
             <p
-              @click.prevent="store.markTodoComplete(element.id)"
               class="px-6 w-full"
               :class="{
                 'line-through text-very-dark-grayish-blue-2  dark:text-dark-grayish-blue':
